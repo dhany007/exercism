@@ -1,7 +1,6 @@
 package pangram
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -10,7 +9,6 @@ func IsPangram(input string) bool {
 		return false
 	}
 	input = strings.ToLower(input)
-	fmt.Println("input", input)
 	chars := make(map[rune]bool, 26)
 
 	for _, in := range input {

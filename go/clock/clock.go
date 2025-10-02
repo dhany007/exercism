@@ -47,17 +47,18 @@ func (c Clock) Add(m int) Clock {
 	minutes := c.Minutes + m
 	if minutes > 60 {
 		hours = math.Floor(float64(minutes) / 60)
-		minutes = minutes - (minutes * int(hours))
+		fmt.Println(hours)
+		minutes = minutes - (60 * int(hours))
 	}
 
 	if minutes == 60 {
 		minutes = 0
+		hours += 1
 	}
 
 	temp := c.Hours + int(hours)
-	if temp == 24 {
-		temp = 0
-	}
+	temp = temp % 24
+
 	return Clock{
 		Minutes: minutes,
 		Hours:   temp,
@@ -67,8 +68,9 @@ func (c Clock) Add(m int) Clock {
 func (c Clock) Subtract(m int) Clock {
 	hour := c.Hours
 	minute := c.Minutes
+
 	for {
-		if minute-m <= 0 {
+		if minute-m < 0 {
 			minute += 60
 			hour -= 1
 			continue
@@ -76,6 +78,14 @@ func (c Clock) Subtract(m int) Clock {
 
 		minute -= m
 		break
+	}
+
+	if minute-m == 0 {
+		hour -= 1
+	}
+
+	if hour < 0 {
+		hour = (hour + 24) % 24
 	}
 
 	return Clock{
